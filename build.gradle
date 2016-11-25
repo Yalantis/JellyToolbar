@@ -2,10 +2,8 @@
 
 buildscript {
     ext.kotlin_version = '1.0.4'
-    ext.icepick_version = '3.2.0-SNAPSHOT'
     repositories {
         jcenter()
-        maven { url "https://clojars.org/repo/" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0'
