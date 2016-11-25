@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/defaultToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp" />
+
+    <com.yalantis.jellytoolbar.widget.JellyView
+        android:id="@+id/jellyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.yalantis.jellytoolbar.widget.ContentLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>
