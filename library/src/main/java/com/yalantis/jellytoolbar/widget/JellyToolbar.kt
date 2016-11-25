@@ -9,7 +9,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import com.yalantis.jellytoolbar.Constant
 import com.yalantis.jellytoolbar.R
+import com.yalantis.jellytoolbar.listener.JellyListener
 import kotlinx.android.synthetic.main.jelly_toolbar.view.*
 
 /**
@@ -42,6 +44,7 @@ class JellyToolbar : FrameLayout, JellyWidget {
         set(value) {
             value?.let { jellyView.endColor = value }
         }
+    var jellyListener: JellyListener? = null
 
     private var mIsExpanded = false
 
@@ -86,6 +89,8 @@ class JellyToolbar : FrameLayout, JellyWidget {
         jellyView.collapse()
         contentLayout.collapse()
         mIsExpanded = false
+        jellyListener?.onToolbarCollapsingStarted()
+        postDelayed({ jellyListener?.onToolbarCollapsed() }, Constant.ANIMATION_DURATION)
     }
 
     override fun expand() {
@@ -94,6 +99,8 @@ class JellyToolbar : FrameLayout, JellyWidget {
         jellyView.expand()
         contentLayout.expand()
         mIsExpanded = true
+        jellyListener?.onToolbarExpandingStarted()
+        postDelayed({ jellyListener?.onToolbarExpanded() }, Constant.ANIMATION_DURATION)
     }
 
 }
