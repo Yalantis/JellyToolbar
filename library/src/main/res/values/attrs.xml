@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="JellyToolbar">
+        <attr name="title" format="string" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="icon" format="reference" />
+        <attr name="cancelIcon" format="reference" />
+        <attr name="startColor" format="color" />
+        <attr name="endColor" format="color" />
+    </declare-styleable>
+</resources>
