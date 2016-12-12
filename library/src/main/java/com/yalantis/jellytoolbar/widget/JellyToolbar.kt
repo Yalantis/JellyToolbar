@@ -1,6 +1,8 @@
 package com.yalantis.jellytoolbar.widget
 
 import android.content.Context
+import android.os.Bundle
+import android.os.Parcelable
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
 import android.support.v7.widget.Toolbar
@@ -19,6 +21,9 @@ import kotlinx.android.synthetic.main.jelly_toolbar.view.*
  */
 class JellyToolbar : FrameLayout, JellyWidget {
 
+    private val KEY_IS_EXPANDED = "key_is_expanded"
+    private val KEY_SUPER_STATE = "key_super_state"
+
     var toolbar: Toolbar? = null
         private set
         get() {
@@ -27,22 +32,31 @@ class JellyToolbar : FrameLayout, JellyWidget {
     var contentView: View? = null
         set(value) {
             contentLayout.contentView = value
+            field = value
         }
     @DrawableRes var iconRes: Int? = null
         set(value) {
             contentLayout.iconRes = value
+            field = value
         }
     @DrawableRes var cancelIconRes: Int? = null
         set(value) {
             contentLayout.cancelIconRes = value
+            field = value
         }
     @ColorInt var startColor: Int? = null
         set(value) {
-            value?.let { jellyView.startColor = value }
+            value?.let {
+                jellyView.startColor = value
+                field = value
+            }
         }
     @ColorInt var endColor: Int? = null
         set(value) {
-            value?.let { jellyView.endColor = value }
+            value?.let {
+                jellyView.endColor = value
+                field = value
+            }
         }
     var jellyListener: JellyListener? = null
 
@@ -56,7 +70,7 @@ class JellyToolbar : FrameLayout, JellyWidget {
         attrs?.let { retrieveAttributes(attrs) }
 
         contentLayout.onIconClickListener = View.OnClickListener { expand() }
-        contentLayout.onCancelIconClickListener = View.OnClickListener { collapse() }
+        contentLayout.onCancelIconClickListener = View.OnClickListener { jellyListener?.onCancelIconClicked() }
     }
 
     private fun retrieveAttributes(attrs: AttributeSet) {
@@ -101,6 +115,35 @@ class JellyToolbar : FrameLayout, JellyWidget {
         mIsExpanded = true
         jellyListener?.onToolbarExpandingStarted()
         postDelayed({ jellyListener?.onToolbarExpanded() }, Constant.ANIMATION_DURATION)
+    }
+
+    override fun onSaveInstanceState(): Parcelable {
+        return Bundle().apply {
+            putBoolean(KEY_IS_EXPANDED, mIsExpanded)
+            putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState())
+        }
+    }
+
+    override fun onRestoreInstanceState(state: Parcelable?) {
+        if (state is Bundle) {
+            super.onRestoreInstanceState(state.getParcelable(KEY_SUPER_STATE))
+            val isExpanded = state.getBoolean(KEY_IS_EXPANDED)
+            init()
+            if (isExpanded) {
+                expandImmediately()
+            }
+        }
+    }
+
+    override fun expandImmediately() {
+        if (mIsExpanded || jellyView.isBusy) return
+
+        jellyView.expandImmediately()
+        contentLayout.expandImmediately()
+        mIsExpanded = true
+    }
+
+    override fun init() {
     }
 
 }

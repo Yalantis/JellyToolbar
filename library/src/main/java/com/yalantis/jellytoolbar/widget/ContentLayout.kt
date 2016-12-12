@@ -23,24 +23,33 @@ class ContentLayout : RelativeLayout, JellyWidget {
             value?.let {
                 container.removeAllViews()
                 container.addView(it)
+                field = value
             }
         }
     @DrawableRes var iconRes: Int? = null
         set(value) {
-            value?.let { icon.setBackgroundResource(it) }
+            value?.let {
+                icon.setBackgroundResource(it)
+                field = value
+            }
         }
     @DrawableRes var cancelIconRes: Int? = null
         set(value) {
-            value?.let { cancelIcon.setBackgroundResource(it) }
+            value?.let {
+                cancelIcon.setBackgroundResource(it)
+                field = value
+            }
         }
 
     internal var onIconClickListener: OnClickListener? = null
         set(value) {
             icon.setOnClickListener(value)
+            field = value
         }
     internal var onCancelIconClickListener: OnClickListener? = null
         set(value) {
             cancelIcon.setOnClickListener(value)
+            field = value
         }
 
     private var mStartPosition = 0f
@@ -62,7 +71,7 @@ class ContentLayout : RelativeLayout, JellyWidget {
         }
     }
 
-    fun init() {
+    override fun init() {
         translationX = width.toFloat() - getDimen(R.dimen.icon_full_size)
         mStartPosition = width.toFloat() - getDimen(R.dimen.icon_full_size)
         mEndPosition = -height.toFloat() + getDimen(R.dimen.icon_full_size) - getDimen(R.dimen.icon_padding) * 0.5f
@@ -76,8 +85,8 @@ class ContentLayout : RelativeLayout, JellyWidget {
             interpolator = BounceInterpolator()
             addUpdateListener {
                 translationX = animatedValue as Float
-                icon.alpha = 1f - 0.5f * getProgress(mEndPosition, mStartPosition, animatedFraction)
-                cancelIcon.rotationY = 90 * getProgress(mEndPosition, mStartPosition, animatedFraction) * 10
+                icon.alpha = 0.5f + 0.5f * animatedFraction
+                cancelIcon.rotationY = 180 * animatedFraction
             }
         }.start()
         ValueAnimator.ofFloat(0f, 90f).apply {
@@ -95,14 +104,13 @@ class ContentLayout : RelativeLayout, JellyWidget {
             interpolator = BounceInterpolator()
             addUpdateListener {
                 translationX = animatedValue as Float
-                icon.alpha = 0.5f + 0.5f * getProgress(mStartPosition, mEndPosition, animatedFraction)
+                icon.alpha = 1f - 0.5f * animatedFraction
             }
         }.start()
     }
 
-    private fun getProgress(startValue: Float, endValue: Float, currentValue: Float): Float {
-        return currentValue / (endValue - startValue)
+    override fun expandImmediately() {
+        expand()
     }
-
 
 }

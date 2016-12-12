@@ -47,7 +47,7 @@ class JellyView : View, JellyWidget {
         redraw(canvas)
     }
 
-    private fun init() {
+    override fun init() {
         layoutParams = FrameLayout.LayoutParams(width + mVisibleWidth.toInt() * 2, height)
         translationX = width - getDimen(R.dimen.jelly_view_size).toFloat()
         mStartPosition = translationX
@@ -58,11 +58,13 @@ class JellyView : View, JellyWidget {
 
     private fun redraw(canvas: Canvas?) {
         mPaint.shader = mGradient
-        mPath.moveTo(mVisibleWidth, 0f)
-        mPath.lineTo(width.toFloat(), 0f)
-        mPath.lineTo(width.toFloat(), height.toFloat())
-        mPath.lineTo(mVisibleWidth, height.toFloat())
-        mPath.quadTo(mVisibleWidth - mDifference, height / 2f, mVisibleWidth, 0f)
+        mPath.apply {
+            moveTo(mVisibleWidth, 0f)
+            lineTo(width.toFloat(), 0f)
+            lineTo(width.toFloat(), height.toFloat())
+            lineTo(mVisibleWidth, height.toFloat())
+            quadTo(mVisibleWidth - mDifference, height / 2f, mVisibleWidth, 0f)
+        }
         canvas?.drawPath(mPath, mPaint)
         mPath.reset()
         mPath.close()
@@ -89,20 +91,34 @@ class JellyView : View, JellyWidget {
         isBusy = true
         isExpanded = true
         animateJellyExpanding()
-        moveForward()
+        moveForward(true)
+    }
+
+    override fun expandImmediately() {
+        if (isBusy) return
+
+        isBusy = true
+        isExpanded = true
+
+        animateJelly(1, true, 0)
+        translationX = width - getDimen(R.dimen.jelly_view_size).toFloat()
+        mStartPosition = translationX
+        mEndPosition = -mVisibleWidth
+        moveForward(false)
     }
 
     private fun animateJellyExpanding() {
-        animateJelly(1, true)
+        animateJelly(1, true, Constant.ANIMATION_DURATION)
     }
 
     private fun animateJellyCollapsing() {
-        animateJelly(-1, false)
+        animateJelly(-1, false, Constant.ANIMATION_DURATION)
     }
 
-    private fun animateJelly(coefficient: Int, moveOffset: Boolean) {
+    private fun animateJelly(coefficient: Int, moveOffset: Boolean, animDuration: Long) {
+        mVisibleWidth = getDimen(R.dimen.jelly_view_width)
         ValueAnimator.ofFloat(0f, mVisibleWidth / 2).apply {
-            duration = Constant.ANIMATION_DURATION
+            duration = animDuration
             interpolator = JellyInterpolator()
             addUpdateListener {
                 mDifference = animatedValue as Float * coefficient
@@ -132,8 +148,10 @@ class JellyView : View, JellyWidget {
         }.start()
     }
 
-    private fun moveForward() {
-        ValueAnimator.ofFloat(mStartPosition, mEndPosition + getDimen(R.dimen.jelly_view_offset)).apply {
+    private fun moveForward(offset: Boolean) {
+        var endPosition = mEndPosition
+        if (offset) endPosition += getDimen(R.dimen.jelly_view_offset)
+        ValueAnimator.ofFloat(mStartPosition, endPosition).apply {
             translationX = mStartPosition
             duration = Constant.ANIMATION_DURATION / 3
             addUpdateListener {

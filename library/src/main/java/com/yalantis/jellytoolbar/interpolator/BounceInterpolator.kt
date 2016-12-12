@@ -9,13 +9,13 @@ class BounceInterpolator : Interpolator {
     val ROTATION_TIME = 0.46667f
     val FIRST_BOUNCE_TIME = 0.26666f
 
-    override fun getInterpolation(t: Float): Float {
-        if (t < ROTATION_TIME)
-            return rotation(t)
-        else if (t < ROTATION_TIME + FIRST_BOUNCE_TIME)
-            return firstBounce(t)
-        else
-            return secondBounce(t)
+    override fun getInterpolation(t: Float): Float = when {
+        t < ROTATION_TIME ->
+            rotation(t)
+        t < ROTATION_TIME + FIRST_BOUNCE_TIME ->
+            firstBounce(t)
+        else ->
+            secondBounce(t)
     }
 
     private fun rotation(t: Float): Float {

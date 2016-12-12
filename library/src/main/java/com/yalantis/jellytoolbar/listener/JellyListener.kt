@@ -13,4 +13,6 @@ interface JellyListener {
 
     fun onToolbarCollapsed()
 
+    fun onCancelIconClicked()
+
 }
