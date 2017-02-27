@@ -21,8 +21,10 @@ import kotlinx.android.synthetic.main.jelly_toolbar.view.*
  */
 class JellyToolbar : FrameLayout, JellyWidget {
 
-    private val KEY_IS_EXPANDED = "key_is_expanded"
-    private val KEY_SUPER_STATE = "key_super_state"
+    companion object {
+        private const val KEY_IS_EXPANDED = "key_is_expanded"
+        private const val KEY_SUPER_STATE = "key_super_state"
+    }
 
     var toolbar: Toolbar? = null
         private set
@@ -60,7 +62,7 @@ class JellyToolbar : FrameLayout, JellyWidget {
         }
     var jellyListener: JellyListener? = null
 
-    private var mIsExpanded = false
+    private var isExpanded = false
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -98,28 +100,28 @@ class JellyToolbar : FrameLayout, JellyWidget {
     }
 
     override fun collapse() {
-        if (!mIsExpanded || jellyView.isBusy) return
+        if (!isExpanded) return
 
         jellyView.collapse()
         contentLayout.collapse()
-        mIsExpanded = false
+        isExpanded = false
         jellyListener?.onToolbarCollapsingStarted()
         postDelayed({ jellyListener?.onToolbarCollapsed() }, Constant.ANIMATION_DURATION)
     }
 
     override fun expand() {
-        if (mIsExpanded || jellyView.isBusy) return
+        if (isExpanded) return
 
         jellyView.expand()
         contentLayout.expand()
-        mIsExpanded = true
+        isExpanded = true
         jellyListener?.onToolbarExpandingStarted()
         postDelayed({ jellyListener?.onToolbarExpanded() }, Constant.ANIMATION_DURATION)
     }
 
     override fun onSaveInstanceState(): Parcelable {
         return Bundle().apply {
-            putBoolean(KEY_IS_EXPANDED, mIsExpanded)
+            putBoolean(KEY_IS_EXPANDED, isExpanded)
             putParcelable(KEY_SUPER_STATE, super.onSaveInstanceState())
         }
     }
@@ -136,11 +138,11 @@ class JellyToolbar : FrameLayout, JellyWidget {
     }
 
     override fun expandImmediately() {
-        if (mIsExpanded || jellyView.isBusy) return
+        if (isExpanded) return
 
         jellyView.expandImmediately()
         contentLayout.expandImmediately()
-        mIsExpanded = true
+        isExpanded = true
     }
 
     override fun init() {

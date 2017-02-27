@@ -5,6 +5,6 @@ package com.yalantis.jellytoolbar
  */
 object Constant {
 
-    const val ANIMATION_DURATION = 900L
+    const val ANIMATION_DURATION = 1100L
 
 }
