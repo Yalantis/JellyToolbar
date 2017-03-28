@@ -3,14 +3,16 @@ package com.yalantis.jellytoolbar.listener
 /**
  * Created by irinagalata on 11/25/16.
  */
-interface JellyListener {
+abstract class JellyListener {
 
-    fun onToolbarExpandingStarted()
+    open fun onToolbarExpandingStarted() = Unit
 
-    fun onToolbarCollapsingStarted()
+    open fun onToolbarCollapsingStarted() = Unit
 
-    fun onToolbarExpanded()
+    open fun onToolbarExpanded() = Unit
 
-    fun onToolbarCollapsed()
+    open fun onToolbarCollapsed() = Unit
+
+    abstract fun onCancelIconClicked()
 
 }

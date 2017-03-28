@@ -11,10 +11,10 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:cancelIcon="@drawable/ic_close"
-        app:endColor="#8463d4"
+        app:endColor="@color/colorEnd"
         app:icon="@drawable/ic_search"
-        app:startColor="#cb5ed9"
-        app:title="   News feed"
+        app:startColor="@color/colorStart"
+        app:title="@string/str_news_feed"
         app:titleTextColor="@android:color/white" />
 
     <ScrollView

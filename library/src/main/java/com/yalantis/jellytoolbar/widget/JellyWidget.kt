@@ -9,4 +9,8 @@ interface JellyWidget {
 
     fun expand()
 
+    fun init() {}
+
+    fun expandImmediately()
+
 }
