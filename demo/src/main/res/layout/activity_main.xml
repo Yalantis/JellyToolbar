@@ -10,8 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingStart="@dimen/activity_horizontal_margin"
         app:cancelIcon="@drawable/ic_close"
         app:endColor="@color/colorEnd"
         app:icon="@drawable/ic_search"

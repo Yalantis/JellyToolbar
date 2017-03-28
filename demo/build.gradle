@@ -23,6 +23,5 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.github.igalata:Bubble-Picker:v0.1.1'
     compile project(':library')
 }
