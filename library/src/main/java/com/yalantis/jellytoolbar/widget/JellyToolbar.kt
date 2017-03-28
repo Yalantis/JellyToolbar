@@ -145,7 +145,4 @@ class JellyToolbar : FrameLayout, JellyWidget {
         isExpanded = true
     }
 
-    override fun init() {
-    }
-
 }
