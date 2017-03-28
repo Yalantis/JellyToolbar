@@ -64,7 +64,7 @@ First of all, add `JellyToolbar` to the xml layout of your activity, so it looks
 
 After that pass an instance of the `JellyListener` and content view 
 (the view which would be inserted to the toolbar) to the `JellyToolbar`. 
-As you see `JellyToolbar` has `getToolbar()` method to let you use all the methods of the standard `Toolbar`. 
+`JellyToolbar` has `getToolbar()` method to let you use all the methods of the standard `Toolbar`. 
 
 
 ```Java
@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
 ```
 
 To control the animation flow use `collapse()` and `expand()` methods.
+
+Override `onToolbarExpandingStarted()`, `onToolbarCollapsingStarted()`, `onToolbarExpanded()` and `onToolbarCollapsed()`
+methods of the `JellyListener` to get all the animation events.
 
 ## Let us know!
 
