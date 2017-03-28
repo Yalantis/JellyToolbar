@@ -23,29 +23,40 @@ class ContentLayout : RelativeLayout, JellyWidget {
             value?.let {
                 container.removeAllViews()
                 container.addView(it)
+                field = value
             }
         }
     @DrawableRes var iconRes: Int? = null
         set(value) {
-            value?.let { icon.setBackgroundResource(it) }
+            value?.let {
+                icon.setBackgroundResource(it)
+                field = value
+            }
         }
     @DrawableRes var cancelIconRes: Int? = null
         set(value) {
-            value?.let { cancelIcon.setBackgroundResource(it) }
+            value?.let {
+                cancelIcon.setBackgroundResource(it)
+                field = value
+            }
         }
 
     internal var onIconClickListener: OnClickListener? = null
         set(value) {
             icon.setOnClickListener(value)
+            field = value
         }
     internal var onCancelIconClickListener: OnClickListener? = null
         set(value) {
             cancelIcon.setOnClickListener(value)
+            field = value
         }
 
-    private var mStartPosition = 0f
-    private var mEndPosition = 0f
-    private var mIsInitialized = false
+    private var startPosition = 0f
+    private var endPosition = 0f
+    private var isInitialized = false
+    private val iconFullSize = getDimen(R.dimen.icon_full_size)
+    private val iconPadding = getDimen(R.dimen.icon_padding)
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -56,53 +67,61 @@ class ContentLayout : RelativeLayout, JellyWidget {
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
 
-        if (!mIsInitialized) {
+        if (!isInitialized) {
             init()
-            mIsInitialized = true
+            isInitialized = true
         }
     }
 
-    fun init() {
-        translationX = width.toFloat() - getDimen(R.dimen.icon_full_size)
-        mStartPosition = width.toFloat() - getDimen(R.dimen.icon_full_size)
-        mEndPosition = -height.toFloat() + getDimen(R.dimen.icon_full_size) - getDimen(R.dimen.icon_padding) * 0.5f
+    override fun init() {
+        translationX = width.toFloat() - iconFullSize
+        startPosition = width.toFloat() - iconFullSize
+        endPosition = -height.toFloat() + iconFullSize - iconPadding * 0.5f
     }
 
     override fun collapse() {
-        ValueAnimator.ofFloat(mEndPosition, mStartPosition).apply {
+        ValueAnimator.ofFloat(endPosition, startPosition).apply {
             startDelay = 50
-            translationX = mEndPosition
+            translationX = endPosition
             duration = Constant.ANIMATION_DURATION / 3
             interpolator = BounceInterpolator()
             addUpdateListener {
                 translationX = animatedValue as Float
-                icon.alpha = 1f - 0.5f * getProgress(mEndPosition, mStartPosition, animatedFraction)
-                cancelIcon.rotationY = 90 * getProgress(mEndPosition, mStartPosition, animatedFraction) * 10
+                icon.alpha = 0.5f + 0.5f * animatedFraction
+
+                with(cancelIcon) {
+                    rotation = 360 * animatedFraction
+                    scaleX = 1 - animatedFraction
+                    scaleY = 1 - animatedFraction
+                    alpha = 1 - animatedFraction
+                    translationX = endPosition - animatedValue as Float
+                }
             }
-        }.start()
-        ValueAnimator.ofFloat(0f, 90f).apply {
-            startDelay = 50
-            duration = 50
-            addUpdateListener { cancelIcon.rotation = animatedValue as Float }
         }.start()
     }
 
     override fun expand() {
-        ValueAnimator.ofFloat(mStartPosition, mEndPosition).apply {
+        ValueAnimator.ofFloat(startPosition, endPosition).apply {
             startDelay = 50
-            translationX = mStartPosition
+            translationX = startPosition
             duration = Constant.ANIMATION_DURATION / 3
             interpolator = BounceInterpolator()
+
+            with(cancelIcon) {
+                translationX = 0f
+                alpha = 1f
+                scaleX = 1f
+                scaleY = 1f
+            }
             addUpdateListener {
                 translationX = animatedValue as Float
-                icon.alpha = 0.5f + 0.5f * getProgress(mStartPosition, mEndPosition, animatedFraction)
+                icon.alpha = 1f - 0.5f * animatedFraction
             }
         }.start()
     }
 
-    private fun getProgress(startValue: Float, endValue: Float, currentValue: Float): Float {
-        return currentValue / (endValue - startValue)
+    override fun expandImmediately() {
+        expand()
     }
-
 
 }

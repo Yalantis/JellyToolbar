@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Jelly animation demo</string>
+    <string name="app_name">JellyToolbar</string>
+    <string name="str_news_feed">News feed</string>
 </resources>
