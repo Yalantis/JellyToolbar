@@ -2,11 +2,11 @@ package com.yalantis.jellytoolbar.widget
 
 import android.animation.ValueAnimator
 import android.content.Context
-import android.support.annotation.DrawableRes
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.RelativeLayout
+import androidx.annotation.DrawableRes
 import com.yalantis.jellytoolbar.Constant
 import com.yalantis.jellytoolbar.R
 import com.yalantis.jellytoolbar.getDimen
@@ -26,7 +26,8 @@ class ContentLayout : RelativeLayout, JellyWidget {
                 field = value
             }
         }
-    @DrawableRes var iconRes: Int? = null
+    @DrawableRes
+    var iconRes: Int? = null
         set(value) {
             value?.let {
                 icon.setBackgroundResource(it)
