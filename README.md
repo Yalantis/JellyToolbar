@@ -28,7 +28,7 @@ allprojects {
 Add the dependency:
 ```Groovy
 dependencies {
-  compile 'com.github.yalantis:jellytoolbar:v1.0'
+  implementation 'com.github.yalantis:jellytoolbar:v1.0.1'
 }
 ```
 
