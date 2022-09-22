@@ -115,7 +115,7 @@ class JellyView : View, JellyWidget {
                 invalidate()
             }
             addListener(object : AnimationListener() {
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationEnd(animation: Animator) {
                     difference = 0f
                     invalidate()
 

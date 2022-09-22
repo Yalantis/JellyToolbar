@@ -3,14 +3,14 @@ package com.yalantis.jellytoolbar.widget
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
-import android.support.annotation.ColorInt
-import android.support.annotation.DrawableRes
-import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.appcompat.widget.Toolbar
 import com.yalantis.jellytoolbar.Constant
 import com.yalantis.jellytoolbar.R
 import com.yalantis.jellytoolbar.listener.JellyListener
@@ -36,7 +36,8 @@ class JellyToolbar : FrameLayout, JellyWidget {
             contentLayout.contentView = value
             field = value
         }
-    @DrawableRes var iconRes: Int? = null
+    @DrawableRes
+    var iconRes: Int? = null
         set(value) {
             contentLayout.iconRes = value
             field = value
@@ -46,7 +47,8 @@ class JellyToolbar : FrameLayout, JellyWidget {
             contentLayout.cancelIconRes = value
             field = value
         }
-    @ColorInt var startColor: Int? = null
+    @ColorInt
+    var startColor: Int? = null
         set(value) {
             value?.let {
                 jellyView.startColor = value
@@ -64,9 +66,9 @@ class JellyToolbar : FrameLayout, JellyWidget {
 
     private var isExpanded = false
 
-    constructor(context: Context?) : this(context, null)
-    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context) : this(context, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         LayoutInflater.from(context).inflate(R.layout.jelly_toolbar, this)
 
         attrs?.let { retrieveAttributes(attrs) }

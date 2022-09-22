@@ -1,7 +1,7 @@
 package com.yalantis.jellytoolbar
 
-import android.support.annotation.DimenRes
 import android.view.View
+import androidx.annotation.DimenRes
 
 /**
  * Created by irinagalata on 11/23/16.
